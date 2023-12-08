@@ -1,8 +1,5 @@
 {
-  "extends": [
-    "@tsconfig/recommended/tsconfig",
-    //"@tsconfig/node-lts/tsconfig"
-  ],
+  "extends": "@tsconfig/recommended/tsconfig",
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
     /* Modules */
