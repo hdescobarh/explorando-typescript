@@ -1,0 +1,19 @@
+{
+  "version": "0.2",
+  "enabled": true,
+  "language": "en, es",
+  "languageSettings": [
+    {
+      "languageId": "python",
+      "includeRegExpList": ["#.*", "/[']{3}*?[']{3}/g", "/[\"]{3}*?[\"]{3}/g"]
+    },
+    {
+      "languageId": "markdown",
+      "ignoreRegExpList": ["[`]{3}(.+\n)+[`]{3}", "[$]{1,2}.*?[$]{1,2}"]
+    }
+  ],
+  "flagWords": [],
+  "enableFiletypes": ["typescript", "markdown"],
+  "ignorePaths": ["**/node_modules", ".git", "/*.code-workspace"],
+  "words": []
+}
