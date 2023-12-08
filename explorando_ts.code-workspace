@@ -1,0 +1,31 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"editor.formatOnSave": true,
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"files.exclude": {
+			"**/*.js": {
+				"when": "$(basename).ts"
+			},
+			"**/**.js": {
+				"when": "$(basename).tsx"
+			}
+		},
+		"typescript.inlayHints.variableTypes.enabled": true,
+		"typescript.inlayHints.variableTypes.suppressWhenTypeMatchesName": true,
+		"typescript.inlayHints.parameterTypes.enabled": true,
+		"typescript.inlayHints.parameterNames.suppressWhenArgumentMatchesName": true
+	},
+	"extensions": {
+		"recommendations": [
+			"dbaeumer.vscode-eslint",
+			"esbenp.prettier-vscode",
+			"visualstudioexptteam.vscodeintellicode",
+			"yoavbls.pretty-ts-errors"
+		]
+	}
+}

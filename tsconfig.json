@@ -1,0 +1,18 @@
+{
+  "extends": [
+    "@tsconfig/recommended/tsconfig",
+    //"@tsconfig/node-lts/tsconfig"
+  ],
+  "compilerOptions": {
+    /* Visit https://aka.ms/tsconfig to read more about this file */
+    /* Modules */
+    "module": "Node16",
+    /* Language and Environment */
+    "target": "es2016",
+    /* Emit */
+    "sourceMap": true,
+    "outDir": "dist",
+    /* Type checking */
+    "strict": true,
+  }
+}
