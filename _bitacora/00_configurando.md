@@ -28,7 +28,7 @@ En tsconfig.json agregar:
 npm init @eslint/config
 ```
 
-3. Como formatter Pettrier:
+3. Como formatter Prettier:
 
 ```shell
 npm install --save-dev prettier -D --save-exact
