@@ -10,3 +10,6 @@ Aprovechando el [AdventJS](https://adventjs.dev/) para explorar un poco TypeScri
   Carpeta con algunos apuntes personales para repasar.
 - src/<br>
   Aquí va todo el código fuente.
+  <br>
+
+![adventJS](./assets/adventjs.jpg)
