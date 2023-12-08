@@ -11,5 +11,6 @@
     "outDir": "dist",
     /* Type checking */
     "strict": true,
+    "noUnusedParameters": true,
   }
 }
