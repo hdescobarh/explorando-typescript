@@ -18,7 +18,8 @@
 		"typescript.inlayHints.variableTypes.enabled": true,
 		"typescript.inlayHints.variableTypes.suppressWhenTypeMatchesName": true,
 		"typescript.inlayHints.parameterTypes.enabled": true,
-		"typescript.inlayHints.parameterNames.suppressWhenArgumentMatchesName": true
+		"typescript.inlayHints.parameterNames.suppressWhenArgumentMatchesName": true,
+		"prettier.printWidth": 80,
 	},
 	"extensions": {
 		"recommendations": [
