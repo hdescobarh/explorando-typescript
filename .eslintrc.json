@@ -22,7 +22,10 @@
             "warn",
             {
                 "vars": "all",
-                "args": "after-used"
+                "args": "after-used",
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_",
+                "caughtErrorsIgnorePattern": "^_"
             }
         ]
     }
