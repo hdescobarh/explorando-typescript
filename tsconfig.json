@@ -5,7 +5,7 @@
     /* Modules */
     "module": "Node16",
     /* Language and Environment */
-    "target": "es2016",
+    "target": "es2020",
     /* Emit */
     "sourceMap": true,
     "outDir": "dist",
