@@ -90,12 +90,50 @@ L: {['🟢', '🟢'] , ['🔴', '🔴']}
 Estrategia:
 
 1. Con una ventana deslizante extraigo señal.
-    1.1. La referencia 𝝆 se extrae
+    1.1. La referencia 𝝆 ∈ {R, G} se extrae.
+    Sí al final no hay, se asigna arbitrariamente R o G (significa que solo hay L)
     1.2. se extrae el numero de veces 𝜭(𝒙) que 𝒙 ∈ 𝐀 aparece
 2. El número mínimo es: ∑ 𝜭(𝒙)· 𝙛(𝝆, 𝒙)
 */
 
-function adjustLights(lights: string[]) {
-  // Cod
-  return 0;
+type LightColors = "🟢" | "🔴";
+
+function adjustLights(lights: LightColors[]) {
+  // Step 1. Get 𝝆 and 𝜭(𝒙)
+  let r_number = 0;
+  let g_number = 0;
+  let l_number = 0;
+  let reference: LightColors | null = null;
+
+  for (let i = 0; i < lights.length; i += 2) {
+    // get signal kind
+    if (lights[i] === lights[i + 1]) {
+      l_number += 1;
+      continue;
+    } else if (lights[i] === "🟢") {
+      g_number += 1;
+    } else {
+      r_number += 1;
+    }
+    // add reference
+    reference = reference ?? lights[i];
+  }
+  // default in case does not exist references
+  reference = reference ?? "🟢";
+
+  // Step 2. ∑ 𝜭(𝒙)· 𝙛(𝝆, 𝒙)
+  let changes_number = l_number;
+  changes_number += reference == "🟢" ? r_number * 2 : g_number * 2;
+
+  return changes_number;
+}
+
+for (const [expected, input] of [
+  [1, ["🟢", "🔴", "🟢", "🟢", "🟢"]],
+  [2, ["🔴", "🔴", "🟢", "🟢", "🔴"]],
+  [0, ["🟢", "🔴", "🟢", "🔴", "🟢"]],
+  [1, ["🔴", "🔴", "🔴"]],
+]) {
+  const output = adjustLights(input as LightColors[]);
+  console.log(output, output === expected);
 }
