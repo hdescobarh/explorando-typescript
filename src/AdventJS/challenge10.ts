@@ -42,5 +42,35 @@ Como el problema dice que siempre habrá decoración, n siempre será positivo
 */
 
 function createChristmasTree(ornaments: string, height: number) {
-  return "|";
+  // configure ornament selection
+  let ornament_counter = 0;
+  const ornament_collection = Array.from(ornaments);
+  const ornament_filler = (ornament_number: number) => {
+    let line_ornaments = "";
+    const max_spaces = ornament_number - 1;
+    for (let i = 0; i < ornament_number; i++) {
+      const index = ornament_counter % ornament_collection.length;
+      ornament_counter += 1;
+      const space = i < max_spaces ? " " : "";
+      line_ornaments += ornament_collection[index] + space;
+    }
+    return line_ornaments;
+  };
+
+  // Draw tree branches
+  const tree: string[] = [];
+  const mid_position = height - 1;
+  for (let line = 0; line < height; line++) {
+    const leading_spaces = " ".repeat(mid_position - line);
+    const line_ornaments = ornament_filler(line + 1);
+    tree.push(`${leading_spaces}${line_ornaments}\n`);
+  }
+  // add trunk
+  tree.push(`${" ".repeat(mid_position)}|\n`);
+
+  return tree.join("");
 }
+
+console.log(createChristmasTree("123", 4), "\n");
+console.log(createChristmasTree("*@o", 3), "\n");
+console.log(createChristmasTree("123", 20), "\n");
