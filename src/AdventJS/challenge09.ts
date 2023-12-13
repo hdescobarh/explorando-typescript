@@ -111,9 +111,9 @@ function adjustLights(lights: LightColors[]) {
       l_number += 1;
       continue;
     } else if (lights[i] === "🟢") {
-      g_number += 1;
+      g_number += lights[i + 1] === undefined ? 0.5 : 1;
     } else {
-      r_number += 1;
+      r_number += lights[i + 1] === undefined ? 0.5 : 1;
     }
     // add reference
     reference = reference ?? lights[i];
@@ -128,12 +128,32 @@ function adjustLights(lights: LightColors[]) {
   return changes_number;
 }
 
+console.log("Running cases...");
+let index = -1;
 for (const [expected, input] of [
   [1, ["🟢", "🔴", "🟢", "🟢", "🟢"]],
   [2, ["🔴", "🔴", "🟢", "🟢", "🔴"]],
   [0, ["🟢", "🔴", "🟢", "🔴", "🟢"]],
+  [1, ["🟢", "🟢", "🟢"]],
   [1, ["🔴", "🔴", "🔴"]],
+  [1, ["🔴", "🔴"]],
+  [0, ["🔴"]],
+  [0, [""]],
+  [2, ["🟢", "🟢", "🔴", "🔴", "🟢"]],
+  [2, ["🟢", "🟢", "🔴", "🔴", "🔴"]],
+  [2, ["🟢", "🟢", "🔴", "🔴"]],
+  [2, ["🟢", "🟢", "🔴", "🔴"]],
+  [2, ["🟢", "🟢", "🔴", "🔴"]],
+  [3, ["🟢", "🔴", "🔴", "🟢", "🔴"]], // corregido error
+  [2, ["🟢", "🔴", "🔴", "🟢", "🟢"]],
+  [2, ["🔴", "🟢", "🟢", "🔴", "🔴"]],
+  [3, ["🔴", "🟢", "🟢", "🔴", "🟢"]], // corregido error
 ]) {
   const output = adjustLights(input as LightColors[]);
-  console.log(output, output === expected);
+  index += 1;
+  if (output === expected) {
+    continue;
+  }
+  console.log(index, input, output);
 }
+console.log("Done");
