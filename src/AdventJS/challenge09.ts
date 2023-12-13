@@ -87,12 +87,17 @@ L: {['🟢', '🟢'] , ['🔴', '🔴']}
     (2). 𝙛(𝒙, 𝒙) = 0, ∀𝒙 ∈ 𝐀
     (3) (R,G) ↦ 2 , (R,L) ↦ 1, (G,L) ↦ 1
 
+CORRECCIONES:
+La dupla de referencia no la determina la primera. Recordar que el objetivo es el MÍNIMO;
+por lo tanto, es la dupla valid mas frecuente referencia correcta.
+
 Estrategia:
 
 1. Con una ventana deslizante extraigo señal.
     1.1. La referencia 𝝆 ∈ {R, G} se extrae.
     Sí al final no hay, se asigna arbitrariamente R o G (significa que solo hay L)
     1.2. se extrae el numero de veces 𝜭(𝒙) que 𝒙 ∈ 𝐀 aparece
+    1.3. Para mantener el mínimo, la referencia 𝝆 debe satisfacer que 𝜭(𝝆)>= 𝜭(𝒚), 𝒚 ∈ {R, G}
 2. El número mínimo es: ∑ 𝜭(𝒙)· 𝙛(𝝆, 𝒙)
 */
 
@@ -103,23 +108,19 @@ function adjustLights(lights: LightColors[]) {
   let r_number = 0;
   let g_number = 0;
   let l_number = 0;
-  let reference: LightColors | null = null;
 
   for (let i = 0; i < lights.length; i += 2) {
     // get signal kind
     if (lights[i] === lights[i + 1]) {
       l_number += 1;
-      continue;
     } else if (lights[i] === "🟢") {
       g_number += lights[i + 1] === undefined ? 0.5 : 1;
     } else {
       r_number += lights[i + 1] === undefined ? 0.5 : 1;
     }
-    // add reference
-    reference = reference ?? lights[i];
   }
-  // default in case does not exist references
-  reference = reference ?? "🟢";
+  // set reference
+  const reference = r_number > g_number ? "🔴" : "🟢";
 
   // Step 2. ∑ 𝜭(𝒙)· 𝙛(𝝆, 𝒙)
   let changes_number = l_number;
@@ -142,18 +143,17 @@ for (const [expected, input] of [
   [2, ["🟢", "🟢", "🔴", "🔴", "🟢"]],
   [2, ["🟢", "🟢", "🔴", "🔴", "🔴"]],
   [2, ["🟢", "🟢", "🔴", "🔴"]],
-  [2, ["🟢", "🟢", "🔴", "🔴"]],
-  [2, ["🟢", "🟢", "🔴", "🔴"]],
-  [3, ["🟢", "🔴", "🔴", "🟢", "🔴"]], // corregido error
+  [2, ["🟢", "🔴", "🔴", "🟢", "🔴"]], // corregido error
   [2, ["🟢", "🔴", "🔴", "🟢", "🟢"]],
   [2, ["🔴", "🟢", "🟢", "🔴", "🔴"]],
-  [3, ["🔴", "🟢", "🟢", "🔴", "🟢"]], // corregido error
+  [2, ["🔴", "🟢", "🟢", "🔴", "🟢"]], // corregido error
+  [2, ["🟢", "🔴", "🔴", "🟢", "🔴", "🟢", "🔴"]], // corregido error
 ]) {
   const output = adjustLights(input as LightColors[]);
   index += 1;
   if (output === expected) {
     continue;
   }
-  console.log(index, input, output);
+  console.log(index, input, "\n", output);
 }
 console.log("Done");
