@@ -28,6 +28,7 @@ Sea 𝐬 una cadena de texto de longitud len(𝐬) con indices 0 ≤ 𝑖 < len(
 
 (D2) La relación mismatches respecto a la reflexión 𝐔 = {(𝑖, 𝑖') | 𝐬[𝑖] ≠ 𝐬[𝑖']}, Dom(𝐔)={𝑖 | 0 ≤ 𝑖 < len(𝐬)}
 (D2.1) De la definición de 𝐔, se tiene que es reflexiva. (𝑖, 𝑖') ∈ 𝐔 ⟹ (𝑖', 𝑖) ∈ 𝐔
+(D2.2) 𝐔½ ⊂ 𝐔 tal que Dom(𝐔½)={𝑖 | 0 ≤ 𝑖 < len(𝐬)/2}
 (D3) Sea "pal" la propiedad ser palíndromo. pal(𝐬) ⟺ 𝐔 = ∅
 (D4) La pre imagen 𝐬⁻{α} = {𝑖 | 𝐬[𝑖] = α}
 (D4) La distancia 𝐃 esta dada por 𝐃(𝑖, 𝑖') = |𝑖 - 𝑗|
@@ -37,53 +38,93 @@ Sea 𝐬 una cadena de texto de longitud len(𝐬) con indices 0 ≤ 𝑖 < len(
 Hipótesis:
 
 Sí hay una ÚNICA solución.
-- n(𝐔) = 2, 𝐔 = {(𝑖, 𝑖'), (𝑖', 𝑖)} 
-- la solución {𝑚, 𝑛} satisface que (𝑚 = 𝑖 XOR 𝑚 = 𝑖'), (𝑛 ≠ 𝑖, 𝑖')
-- 𝐃(𝑖, 𝑛) = 𝐃(𝑛, 𝑖') > 0
-- Sí 𝑚 = 𝑖 ⟹ n ∈ 𝐬⁻{s[𝑖']} \ {𝑖'}
+- n(𝐔) = 2, 𝐔 = {(𝑖, 𝑖'), (𝑖', 𝑖)}, 𝑖 ≠ 𝑖'
+- la solución {𝑚, 𝑛} satisface que (𝑚 = 𝑖 XOR 𝑚 = 𝑖'), 𝑛 ≠ 𝑖, 𝑖'
+(a) Sí 𝑚 = 𝑖 ⟹ n ∈ 𝐬⁻{s[𝑖']} \ {𝑖'}
+(b) 𝐃(𝑖, 𝑛) = 𝐃(𝑛, 𝑖')  > 0 
+(c) sí (a) ^ (b) ⟹ len(𝐬) % 2 = 1 y 𝑚 es el punto medio
 
   
-
-
 -----------------
-If it is not possible, null.
-If a palindrome can be formed with one change, an array with the two positions (indexes) that must be swapped to create it.
-If the palindrome can be formed with different swaps, always return the first one found.
+- If it is not possible, null.
+- If a palindrome can be formed with one change, an array with the two positions (indexes) that must be swapped to create it.
+
+  No especifica el orden de los indices de la solución. [1, 4] y [4, 1] son la misma solución. ¿cuál reporto?
+
+- If the palindrome can be formed with different swaps, always return the first one found.
+
+  El primero encontrado significa el que involucra el carácter mas a la derecha???
 */
 function getIndexsForPalindrome(word: string) {
+  // asume la palabra esta toda en lower-case
   const forward = Array.from(word);
-  const get_matches = (forward: string[]) => {
-    const reverse_term = forward.length - 1;
-    let no_matches = 0;
-    const match_map: boolean[] = [];
-    for (let i = 0; i < forward.length; i++) {
-      const match = forward[i] === forward[reverse_term - i];
-      no_matches += match ? 0 : 1;
-      match_map.push(match);
+
+  // get 𝐔½, n(𝐔½) = number of solutions if exist
+  const mismatch_subset: [number, number][] = [];
+  const reflection_coefficient = forward.length - 1;
+  const mid_cutoff = forward.length / 2;
+  for (let i = 0; i < mid_cutoff; i++) {
+    const i_reflect = reflection_coefficient - i;
+    if (forward[i] !== forward[i_reflect]) {
+      mismatch_subset.push([i, i_reflect]);
     }
-    return [no_matches, match_map];
+  }
+
+  const exist_solution = (
+    index_1: number,
+    index_2: number,
+    reference: string
+  ) => {
+    if (forward[index_1] === reference) {
+      return index_1;
+    } else if (forward[index_2] === reference) {
+      return index_2;
+    } else {
+      return null;
+    }
   };
 
   //If it is already a palindrome, an empty array.
-  const [no_matches, match_map] = get_matches(forward);
-  if (no_matches === 0) {
+  if (mismatch_subset.length === 0) {
     return [];
+  } else if (mismatch_subset.length === 1) {
+    const mid_point = (forward.length - (forward.length % 2)) / 2;
+    const partial_solution = exist_solution(
+      mismatch_subset[0][0],
+      mismatch_subset[0][1],
+      forward[mid_point]
+    );
+    return partial_solution != null
+      ? [partial_solution, mid_point].sort()
+      : null;
+  } else {
+    return [mismatch_subset[0][0], mismatch_subset[1][0]];
   }
-  return [0, 0];
 }
 
 const test_cases: [string, number[] | null][] = [
+  // Ya son palíndromo
   ["anna", []],
-  ["abab", [0, 1]],
-  ["abac", null],
   ["aaaaaaaa", []],
+  ["reconocer", []],
+
+  // única solución
   ["aaababa", [1, 3]],
+  ["ababaaa", [3, 5]],
+  ["acababa", [1, 3]],
+
+  // multiples soluciones
+  ["abab", [0, 1]],
+  ["rceonocer", [1, 2]],
+
+  // Sin solución
+  ["abac", null],
   ["caababa", null],
 ];
 
 for (const [word, expected] of test_cases) {
   const output = getIndexsForPalindrome(word);
-  if (output.toString() !== expected?.toString()) {
+  if (output?.toString() !== expected?.toString()) {
     console.log(
       `Failed with: ${word}\nExpected: ${expected}. Obtained: ${output}\n`
     );
