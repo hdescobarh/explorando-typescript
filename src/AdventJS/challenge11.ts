@@ -76,9 +76,9 @@ function getIndexsForPalindrome(word: string) {
     reference: string
   ) => {
     if (forward[index_1] === reference) {
-      return index_1;
-    } else if (forward[index_2] === reference) {
       return index_2;
+    } else if (forward[index_2] === reference) {
+      return index_1;
     } else {
       return null;
     }
@@ -98,6 +98,12 @@ function getIndexsForPalindrome(word: string) {
       ? [partial_solution, mid_point].sort()
       : null;
   } else {
+    if (
+      forward[mismatch_subset[0][0]] !== forward[mismatch_subset[1][1]] ||
+      forward[mismatch_subset[0][1]] !== forward[mismatch_subset[1][0]]
+    ) {
+      return null;
+    }
     return [mismatch_subset[0][0], mismatch_subset[1][0]];
   }
 }

@@ -33,3 +33,17 @@ npm init @eslint/config
 ```shell
 npm install --save-dev prettier -D --save-exact
 ```
+
+Configuración para evitar conflictos entre [Prettier y ESlint](https://github.com/prettier/eslint-config-prettier)
+
+```shell
+npm install --save-dev eslint-config-prettier
+```
+
+Agregar **Al final** del archivo de configuración .eslintrc.\*:
+
+```json
+{
+  "extends": ["some-other-config-you-use", "prettier"]
+}
+```
