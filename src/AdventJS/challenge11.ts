@@ -44,6 +44,11 @@ Sí hay una ÚNICA solución.
 (b) 𝐃(𝑖, 𝑛) = 𝐃(𝑛, 𝑖')  > 0 
 (c) sí (a) ^ (b) ⟹ len(𝐬) % 2 = 1 y 𝑚 es el punto medio
 
+Por lo tanto, 
+Sí n(𝐔) > 2 ⟹ no hay solución o hay multiples.
+Sí hay solución, hay dos pares (𝑖, 𝑖'), (𝑗, 𝑗') ∈ 𝐔½ tales que la solución es (𝑖, 𝑗),
+y esta debe satisfacer que 𝐬[𝑖] = s[𝑗'] y 𝐬[𝑗] = s[𝑖']
+
   
 -----------------
 - If it is not possible, null.
@@ -57,50 +62,38 @@ Sí hay una ÚNICA solución.
 */
 function getIndexsForPalindrome(word: string) {
   // asume la palabra esta toda en lower-case
-  const forward = Array.from(word);
+  const s = Array.from(word);
 
   // get 𝐔½, n(𝐔½) = number of solutions if exist
   const mismatch_subset: [number, number][] = [];
-  const reflection_coefficient = forward.length - 1;
-  const mid_cutoff = forward.length / 2;
+  const reflection_coefficient = s.length - 1;
+  const mid_cutoff = s.length / 2;
   for (let i = 0; i < mid_cutoff; i++) {
     const i_reflect = reflection_coefficient - i;
-    if (forward[i] !== forward[i_reflect]) {
+    if (s[i] !== s[i_reflect]) {
       mismatch_subset.push([i, i_reflect]);
     }
   }
-
-  const exist_solution = (
-    index_1: number,
-    index_2: number,
-    reference: string
-  ) => {
-    if (forward[index_1] === reference) {
-      return index_2;
-    } else if (forward[index_2] === reference) {
-      return index_1;
-    } else {
-      return null;
-    }
-  };
 
   //If it is already a palindrome, an empty array.
   if (mismatch_subset.length === 0) {
     return [];
   } else if (mismatch_subset.length === 1) {
-    const mid_point = (forward.length - (forward.length % 2)) / 2;
-    const partial_solution = exist_solution(
-      mismatch_subset[0][0],
-      mismatch_subset[0][1],
-      forward[mid_point]
-    );
-    return partial_solution != null
-      ? [partial_solution, mid_point].sort()
-      : null;
+    const mid_point = (s.length - (s.length % 2)) / 2;
+    const [i, i_reflect] = mismatch_subset[0];
+    let solution = null;
+
+    if (s[i] === s[mid_point]) {
+      solution = [mid_point, i_reflect];
+    } else if (s[i_reflect] === s[mid_point]) {
+      solution = [i, mid_point];
+    }
+
+    return solution;
   } else {
     if (
-      forward[mismatch_subset[0][0]] !== forward[mismatch_subset[1][1]] ||
-      forward[mismatch_subset[0][1]] !== forward[mismatch_subset[1][0]]
+      s[mismatch_subset[0][0]] !== s[mismatch_subset[1][1]] ||
+      s[mismatch_subset[0][1]] !== s[mismatch_subset[1][0]]
     ) {
       return null;
     }
