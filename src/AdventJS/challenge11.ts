@@ -91,13 +91,12 @@ function getIndexsForPalindrome(word: string) {
 
     return solution;
   } else {
-    if (
-      s[mismatch_subset[0][0]] !== s[mismatch_subset[1][1]] ||
-      s[mismatch_subset[0][1]] !== s[mismatch_subset[1][0]]
-    ) {
-      return null;
-    }
-    return [mismatch_subset[0][0], mismatch_subset[1][0]];
+    const exist_solution =
+      s[mismatch_subset[0][0]] === s[mismatch_subset[1][1]] &&
+      s[mismatch_subset[0][1]] === s[mismatch_subset[1][0]];
+    return exist_solution
+      ? [mismatch_subset[0][0], mismatch_subset[1][0]]
+      : null;
   }
 }
 
