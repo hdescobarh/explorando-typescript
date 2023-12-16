@@ -13,3 +13,5 @@ Aprovechando el [AdventJS](https://adventjs.dev/) para explorar un poco TypeScri
   <br>
 
 ![adventJS](./assets/adventjs.jpg)
+
+A vacaciones!!! 🎄🎁, Quien sabe sí saque tiempo para continuar con el AdventJS 🤪🎅
